@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>XYY 的个人网页 | 星野与日奈</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        :root {
+            --primary: #6a5acd;
+            --secondary: #9370db;
+            --accent: #ff69b4;
+            --light: #f8f9fa;
+            --dark: #4b0082;
+            --text: #333;
+            --text-light: #666;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(106, 90, 205, 0.95);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 头部样式 */
+        .header {
+            padding: 120px 5% 60px;
+            text-align: center;
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/45-degree-fabric-light.png');
+            opacity: 0.15;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        .header p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* 角色展示区 - 优化后的样式 */
+        .character-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .character-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(106, 90, 205, 0.2);
+        }
+
+        .character-image-container {
+            width: 100%;
+            height: 500px; /* 增加高度确保完整显示角色 */
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(45deg, #f0f0ff, #f8f8ff);
+        }
+
+        .character-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 使用contain确保完整显示 */
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .character-card:hover .character-image {
+            transform: scale(1.03);
+        }
+
+        .character-info {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .character-name {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .character-title {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .character-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            background: rgba(106, 90, 205, 0.1);
+            padding: 10px 20px;
+            border-radius: 10px;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* 详细信息区域 */
+        .details-section {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(106, 90, 205, 0.1);
+        }
+
+        .detail-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .detail-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .detail-content {
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+
+        /* 联系区域 */
+        .contact-section {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 70px 5%;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .contact-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 40px 5% 20px;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 图片加载动画 */
+        .image-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #f0f0ff, #e6e6ff, #f0f0ff);
+            background-size: 200% 100%;
+            animation: loadingAnimation 1.5s infinite;
+            z-index: 1;
+        }
+
+        @keyframes loadingAnimation {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .character-image-container {
+                height: 450px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .character-image-container {
+                height: 400px;
+            }
+            
+            .character-stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .character-image-container {
+                height: 350px;
+            }
+            
+            .character-name {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-star"></i>
+            <span>星野与日奈</span>
+        </div>
+        <div class="nav-links">
+            <a href="#home"><i class="fas fa-home"></i> 首页</a>
+            <a href="#characters"><i class="fas fa-user-friends"></i> 角色介绍</a>
+            <a href="#details"><i class="fas fa-info-circle"></i> 详细信息</a>
+            <a href="#contact"><i class="fas fa-envelope"></i> 联系我们</a>
+        </div>
+    </nav>
+
+    <!-- 头部区域 -->
+    <header class="header" id="home">
+        <h1>星野与日奈</h1>
+        <p>对策委员会会长与风纪委员会会长 - 基沃托斯最受欢迎的二人组合</p>
+    </header>
+
+    <!-- 角色展示区 - 优化后的图片容器 -->
+    <section class="character-showcase" id="characters">
+        <div class="character-card animate-on-scroll">
+            <div class="character-image-container">
+                <div class="image-loading"></div>
+                <img src='https://cdnimg-v2.gamekee.com/wiki2.0/images/829/4408/2021/10/4/250871.png' 
+                     alt="星野" 
+                     class="character-image"
+                     onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="character-info">
+                <h2 class="character-name">星野</h2>
+                <p class="character-title">对策委员会会长</p>
+                <div class="character-stats">
+                    <div class="stat">
+                        <div class="stat-value">145</div>
+                        <div class="stat-label">身高 (cm)</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">霰弹</div>
+                        <div class="stat-label">武器类型</div>
+                    </div>
+                </div>
+                <p>绰号"大叔"，阿拜多斯对策委员会的核心人物，虽然看起来懒散，但关键时刻非常可靠。</p>
+            </div>
+        </div>
+
+        <div class="character-card animate-on-scroll">
+            <div class="character-image-container">
+                <div class="image-loading"></div>
+                <img src='https://cdnimg-v2.gamekee.com/wiki2.0/images/829/43637/2022/3/21/524053.png' 
+                     alt="日奈" 
+                     class="character-image"
+                     onload="this.previousElementSibling.style.display='none'">
+            </div>
+            <div class="character-info">
+                <h2 class="character-name">日奈</h2>
+                <p class="character-title">风纪委员会会长</p>
+                <div class="character-stats">
+                    <div class="stat">
+                        <div class="stat-value">142</div>
+                        <div class="stat-label">身高 (cm)</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">机关枪</div>
+                        <div class="stat-label">武器类型</div>
+                    </div>
+                </div>
+                <p>绰号"大可爱"，格黑娜风纪委员会会长，外表可爱但实力强大，对规则非常严格。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 详细信息区域 -->
+    <section class="details-section" id="details">
+        <h2 class="section-title">角色详细信息</h2>
+        <div class="details-grid">
+            <div class="detail-card animate-on-scroll">
+                <div class="detail-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="detail-title">空崎日奈 (空崎ヒナ hina)</h3>
+                <p class="detail-content">（摘自BA wiki官网）: 格黑娜学园的风纪委员长。平常是觉得什么都很麻烦的懒虫少女，但是一旦在和校规有关的问题上，就会展现出严格的风纪委员长的样子。经常把“好麻烦”作为口头禅，但在战场上从不迷茫，快速判断并行动。因此与格黑娜敌对的组织最害怕她出场战斗。
+"虽然很麻烦，不过必须做该做的事
+因为那就是我的义务"</p>
+            </div>
+            
+            <div class="detail-card animate-on-scroll">
+                <div class="detail-icon">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <h3 class="detail-title">小鸟游星野 (小鳥遊 ホシノ   hoshino)</h3>
+                <p class="detail-content">（摘自BA wiki官网)  : 阿拜多斯高等学校的前副会长，现在是担任对策委员会的委员长的慵懒少女。拥有大叔似的说话口气，比起工作更喜欢玩耍。虽然因为偷懒会常常被委员会的伙伴说教，可一旦执行任务，就会为了守护伙伴而奋斗在最前线。
+
+“呼哈～随便搞搞就行啦～
+适当咸鱼一下也是很重要的嘛～”</p>
+            </div>
+            
+            <div class="detail-card animate-on-scroll">
+                <div class="detail-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3 class="detail-title">角色关系</h3>
+                <p class="detail-content">两人虽来自不同学校，但在多次事件中合作，建立了深厚的友谊和默契。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系区域 -->
+    <section class="contact-section" id="contact">
+        <div class="contact-content">
+            <h2>了解更多关于星野与日奈</h2>
+            <p>访问官方Wiki获取更多角色信息、故事背景和游戏攻略</p>
+            <div class="contact-buttons">
+                <a href="https://www.gamekee.com/ba" class="contact-btn" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> BA Wiki官网
+                </a>
+                <a href="#" class="contact-btn">
+                    <i class="fas fa-download"></i> 下载高清壁纸
+                </a>
+                <a href="#" class="contact-btn">
+                    <i class="fas fa-envelope"></i> 联系作者
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-weibo"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-qq"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+        </div>
+        <p>© 2023 XYY的个人网页 | 星野与日奈主题设计</p>
+        <p>本网站为XYY和ta的朋友创作，所有角色版权归Nexon所有</p>
+        <div class="copyright">
+            <p>Made with <i class="fas fa-heart" style="color: var(--accent);"></i> by XYY</p>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 图片加载处理
+            const images = document.querySelectorAll('.character-image');
+            images.forEach(img => {
+                if (img.complete) {
+                    img.previousElementSibling.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
